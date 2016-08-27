@@ -7,7 +7,7 @@ import "github.com/kataras/iris"
 func main() {
     api := iris.New()
     api.Get("/hi", hi)
-    api.Listen(":3000")
+    api.Listen(":4000")
 }
 
 func hi(ctx *iris.Context){
