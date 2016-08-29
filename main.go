@@ -3,9 +3,17 @@
 
 package main
 
+import "fmt"
+import "log"
+import "os/exec"
 import "github.com/kataras/iris"
+import "github.com/iris-contrib/middleware/recovery"
 
 func main() {
+
+    //Initialize our recovery middleware to auto-restart on failure
+    iris.Use(recovery.New(iris.Logger))
+
     //Initialize our api
     api := iris.New()
 
@@ -27,8 +35,18 @@ func hiGet(ctx *iris.Context){
 
 //The /speak Post
 func speakPost(ctx *iris.Context) {
-    testField := ctx.FormValueString("test")
-	// myDb.InsertUser(...)
-	println(testField)
-	println("Post from /speak")
+
+    //Get our Json values
+    testField := ctx.FormValueString("sentence")
+
+    //Log the event
+	fmt.Printf("/speak post | Speaking the following statement: %s\n", testField)
+
+    //Run the espeak command, and catch any errors
+    //exec.Command(comman, commandArguments)
+    cmd := exec.Command("espeak", testField);
+    err := cmd.Start()
+	if err != nil {
+		log.Fatal(err)
+	}
 }
