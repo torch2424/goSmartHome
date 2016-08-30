@@ -33,11 +33,11 @@ func hiGet(ctx *iris.Context){
    ctx.Write("Hi %s", "iris")
 }
 
-//The /speak Post
+//The /speak Post. Reads the statement field from json
 func speakPost(ctx *iris.Context) {
 
     //Get our Json values
-    testField := ctx.FormValueString("sentence")
+    testField := ctx.FormValueString("statement")
 
     //Log the event
 	fmt.Printf("/speak post | Speaking the following statement: %s\n", testField)
