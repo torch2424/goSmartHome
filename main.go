@@ -9,10 +9,23 @@ import "os/exec"
 import "github.com/kataras/iris"
 import "github.com/iris-contrib/middleware/recovery"
 
+var iftttKey = ""
+
+//Define our response Struct
+//Message = name of variable in go
+//string is type
+//'json:"message"', json defines as json attribute, "message" is key of attribute
+type Response struct {
+    Message string `json:"message"`
+}
+
 func main() {
 
     //Initialize our recovery middleware to auto-restart on failure
     iris.Use(recovery.New(iris.Logger))
+
+    //Get our keys
+
 
     //Initialize our api
     api := iris.New()
@@ -40,7 +53,8 @@ func speakPost(ctx *iris.Context) {
     testField := ctx.FormValueString("statement")
 
     //Log the event
-	fmt.Printf("/speak post | Speaking the following statement: %s\n", testField)
+	speakLog := fmt.Sprintf("/speak post | Speaking the following statement: %s\n", testField)
+    fmt.Printf(speakLog)
 
     //Run the espeak command, and catch any errors
     //exec.Command(comman, commandArguments)
@@ -49,4 +63,8 @@ func speakPost(ctx *iris.Context) {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+    //Send Okay and respond
+    response := Response{fmt.Sprintf("Success! Speaking the following statement: %s", testField)}
+    ctx.JSON(iris.StatusOK, response)
 }
