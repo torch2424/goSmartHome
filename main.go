@@ -5,7 +5,7 @@ package main
 
 import "fmt"
 import "log"
-import "jsonStructs"
+import "github.com/torch2424/goSmartHome/jsonStructs"
 import "os/exec"
 import "github.com/kataras/iris"
 import "github.com/iris-contrib/middleware/recovery"
