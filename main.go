@@ -5,19 +5,12 @@ package main
 
 import "fmt"
 import "log"
+import "jsonStructs"
 import "os/exec"
 import "github.com/kataras/iris"
 import "github.com/iris-contrib/middleware/recovery"
 
 var iftttKey = ""
-
-//Define our response Struct
-//Message = name of variable in go
-//string is type
-//'json:"message"', json defines as json attribute, "message" is key of attribute
-type Response struct {
-    Message string `json:"message"`
-}
 
 func main() {
 
@@ -38,12 +31,7 @@ func main() {
 
 //DefaultRoute
 func defaultRoute(ctx *iris.Context) {
-   ctx.Write("Welcome to the torch2424 goSmartHome!")
-}
-
-//The /hi route GET
-func hiGet(ctx *iris.Context){
-   ctx.Write("Hi %s", "iris")
+   ctx.Write('Welcome to the torch2424 goSmartHome! My name is Karen!<br><br><img src="http://vignette3.wikia.nocookie.net/spongebob/images/f/fb/Karen_Close_Up.png/revision/latest?cb=20140119181235">')
 }
 
 //The /speak Post. Reads the statement field from json
