@@ -26,7 +26,7 @@ func main() {
     api.Get("/", defaultRoute)
     api.Get("/hi", hiGet)
     api.Post("/speak", speakPost)
-    api.Listen(":4000")
+    api.Listen(":80")
 }
 
 //DefaultRoute
