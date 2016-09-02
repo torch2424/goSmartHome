@@ -1,8 +1,9 @@
 //Define our structs for json here, and functions to decode/encode them
 package jsonStructs
 
-import "encoding/json"
+import "fmt"
 import "io/ioutil"
+import "encoding/json"
 
 //Define our response Struct
 //Message = name of variable in go
@@ -21,10 +22,12 @@ func GetKeys() map[string]interface{} {
     keysFile, _ := ioutil.ReadFile("../keys.json")
 
     //Decode our json
-    err := json.Unmarshal(byt, &keyMap)
+    err := json.Unmarshal(keysFile, &keyMap)
     if err != nil {
         panic(err)
     }
 
-    fmt.Prinln("Keys successfully decoded!")
+    fmt.Println("Keys successfully decoded!")
+
+    return keyMap
 }

@@ -5,10 +5,11 @@ package main
 
 import "fmt"
 import "log"
-import "github.com/torch2424/goSmartHome/jsonStructs"
 import "os/exec"
+import "io/ioutil"
 import "github.com/kataras/iris"
 import "github.com/iris-contrib/middleware/recovery"
+import "github.com/torch2424/goSmartHome/jsonStructs"
 
 var iftttKey = ""
 
@@ -24,14 +25,23 @@ func main() {
     api := iris.New()
 
     api.Get("/", defaultRoute)
-    api.Get("/hi", hiGet)
     api.Post("/speak", speakPost)
-    api.Listen(":80")
+    api.Listen(":4000")
 }
 
 //DefaultRoute
 func defaultRoute(ctx *iris.Context) {
-   ctx.Write('Welcome to the torch2424 goSmartHome! My name is Karen!<br><br><img src="http://vignette3.wikia.nocookie.net/spongebob/images/f/fb/Karen_Close_Up.png/revision/latest?cb=20140119181235">')
+
+    //Read our markdown from our views
+    resMarkdown, err := ioutil.ReadFile("views/defaultRoute.md")
+
+    if err != nil {
+        ctx.Write("Could not read from views...")
+        return;
+    }
+
+    //Render our markdown
+   ctx.Markdown(iris.StatusOK, string(resMarkdown))
 }
 
 //The /speak Post. Reads the statement field from json
@@ -53,6 +63,6 @@ func speakPost(ctx *iris.Context) {
 	}
 
     //Send Okay and respond
-    response := Response{fmt.Sprintf("Success! Speaking the following statement: %s", testField)}
+    response := jsonStructs.Response{fmt.Sprintf("Success! Speaking the following statement: %s", testField)}
     ctx.JSON(iris.StatusOK, response)
 }
