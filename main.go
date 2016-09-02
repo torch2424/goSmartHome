@@ -3,23 +3,35 @@
 
 package main
 
+import "os"
 import "fmt"
 import "log"
 import "os/exec"
 import "io/ioutil"
 import "github.com/kataras/iris"
 import "github.com/iris-contrib/middleware/recovery"
-import "github.com/torch2424/goSmartHome/jsonStructs"
+import "github.com/torch2424/goSmartHome/jsonHelpers"
 
 var iftttKey = ""
 
 func main() {
 
+    //Get our keys
+    apiKeys := jsonHelpers.GetKeys()
+
+    //Save our keys, and err if we are missing any
+    //Using type assertion from the map, as our keys will be strings
+    iftttKey = apiKeys["ifttt"].(string)
+    if len(iftttKey) < 1 {
+        fmt.Println("Could not get ifttt key...")
+        os.Exit(0)
+    }
+
+    //Print our keys
+    fmt.Printf("Ifttt key: %s\n", iftttKey)
+
     //Initialize our recovery middleware to auto-restart on failure
     iris.Use(recovery.New(iris.Logger))
-
-    //Get our keys
-
 
     //Initialize our api
     api := iris.New()
@@ -63,6 +75,6 @@ func speakPost(ctx *iris.Context) {
 	}
 
     //Send Okay and respond
-    response := jsonStructs.Response{fmt.Sprintf("Success! Speaking the following statement: %s", testField)}
+    response := jsonHelpers.Response{fmt.Sprintf("Success! Speaking the following statement: %s", testField)}
     ctx.JSON(iris.StatusOK, response)
 }

@@ -1,5 +1,5 @@
 //Define our structs for json here, and functions to decode/encode them
-package jsonStructs
+package jsonHelpers
 
 import "fmt"
 import "io/ioutil"
@@ -19,10 +19,15 @@ func GetKeys() map[string]interface{} {
     var keyMap map[string]interface{}
 
     //Read in our file
-    keysFile, _ := ioutil.ReadFile("../keys.json")
+    keysFile, err := ioutil.ReadFile("keys.json")
+
+    if err != nil {
+        fmt.Println("Could not read from keys.json")
+        panic(err)
+    }
 
     //Decode our json
-    err := json.Unmarshal(keysFile, &keyMap)
+    err = json.Unmarshal(keysFile, &keyMap)
     if err != nil {
         panic(err)
     }
