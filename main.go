@@ -17,8 +17,8 @@ var ApiKeys map[string]interface{}
 
 //Command Line Parser (Kingpin) Setup
 var (
-	app       = kingpin.New("Karen Smart Home", "A talking smart home server written in go")
-	serverIP = app.Flag("serverIp", "Server address, including port").Default("0.0.0.0").IP()
+	app = kingpin.New("Karen Smart Home", "A talking smart home server written in go")
+	userIp = kingpin.Flag("server", "IP address to ping, including port").Short('s').Default("0.0.0.0:80").TCP()
 )
 
 func main() {
@@ -28,6 +28,9 @@ func main() {
 
     //Print some spacing
     fmt.Println()
+
+    //Parse our input
+	kingpin.Parse()
 
     //Get our keys
     fmt.Println("Parsing API keys from keys.json, beep, bop, boop, beep...")
@@ -46,12 +49,15 @@ func main() {
     //Initialize our recovery middleware to auto-restart on failure
     iris.Use(recovery.New(iris.Logger))
 
-    //Initialize our api
+    //Initialize our api and routes
     api := iris.New()
-
     api.Get("/", routes.DefaultRoute)
     api.Post("/speak", routes.SpeakPost)
-    api.Listen(":4000")
+
+    //Serve the app
+    serverIp := *userIp
+    fmt.Println(serverIp.String())
+    api.Listen(serverIp.String())
 }
 
 //Function to check that we have all of the necessary keys
