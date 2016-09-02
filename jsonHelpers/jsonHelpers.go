@@ -32,7 +32,7 @@ func GetKeys() map[string]interface{} {
         panic(err)
     }
 
-    fmt.Println("Keys successfully decoded!")
+    fmt.Println("Keys successfully parsed!")
 
     return keyMap
 }

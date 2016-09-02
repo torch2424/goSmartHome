@@ -5,30 +5,29 @@ package main
 
 import "os"
 import "fmt"
-import "log"
-import "os/exec"
-import "io/ioutil"
 import "github.com/kataras/iris"
 import "github.com/iris-contrib/middleware/recovery"
 import "github.com/torch2424/goSmartHome/jsonHelpers"
+import "github.com/torch2424/goSmartHome/routes"
 
-var iftttKey = ""
+var ApiKeys map[string]interface{}
 
 func main() {
 
+    //Print some spacing
+    fmt.Println()
+
     //Get our keys
-    apiKeys := jsonHelpers.GetKeys()
+    ApiKeys = jsonHelpers.GetKeys()
 
-    //Save our keys, and err if we are missing any
-    //Using type assertion from the map, as our keys will be strings
-    iftttKey = apiKeys["ifttt"].(string)
-    if len(iftttKey) < 1 {
-        fmt.Println("Could not get ifttt key...")
-        os.Exit(0)
-    }
+    //Print some spacing
+    fmt.Println()
 
-    //Print our keys
-    fmt.Printf("Ifttt key: %s\n", iftttKey)
+    //Check our keys
+    checkKeys()
+
+    //Print some spacing
+    fmt.Println()
 
     //Initialize our recovery middleware to auto-restart on failure
     iris.Use(recovery.New(iris.Logger))
@@ -36,45 +35,25 @@ func main() {
     //Initialize our api
     api := iris.New()
 
-    api.Get("/", defaultRoute)
-    api.Post("/speak", speakPost)
+    api.Get("/", routes.DefaultRoute)
+    api.Post("/speak", routes.SpeakPost)
     api.Listen(":4000")
 }
 
-//DefaultRoute
-func defaultRoute(ctx *iris.Context) {
+//Function to check that we have all of the necessary keys
+func checkKeys() {
 
-    //Read our markdown from our views
-    resMarkdown, err := ioutil.ReadFile("views/defaultRoute.md")
+    //Keys needed: ifttt
 
-    if err != nil {
-        ctx.Write("Could not read from views...")
-        return;
+    //Save our keys, and err if we are missing any
+    //Using type assertion from the map, as our keys will be strings
+    iftttKey := ApiKeys["ifttt"].(string)
+    if len(iftttKey) < 1 {
+        fmt.Println("The ifttt key is blank, exiting...")
+        fmt.Println()
+        os.Exit(0)
     }
 
-    //Render our markdown
-   ctx.Markdown(iris.StatusOK, string(resMarkdown))
-}
-
-//The /speak Post. Reads the statement field from json
-func speakPost(ctx *iris.Context) {
-
-    //Get our Json values
-    testField := ctx.FormValueString("statement")
-
-    //Log the event
-	speakLog := fmt.Sprintf("/speak post | Speaking the following statement: %s\n", testField)
-    fmt.Printf(speakLog)
-
-    //Run the espeak command, and catch any errors
-    //exec.Command(comman, commandArguments)
-    cmd := exec.Command("espeak", testField);
-    err := cmd.Start()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-    //Send Okay and respond
-    response := jsonHelpers.Response{fmt.Sprintf("Success! Speaking the following statement: %s", testField)}
-    ctx.JSON(iris.StatusOK, response)
+    //Finally Print our keys
+    fmt.Printf("Ifttt key: %s\n", iftttKey)
 }
