@@ -47,7 +47,7 @@ func main() {
     fmt.Println()
 
     //Initialize our recovery middleware to auto-restart on failure
-    iris.Use(recovery.New(iris.Logger))
+    iris.Use(recovery.Handler)
 
     //Initialize our api and routes
     api := iris.New()
