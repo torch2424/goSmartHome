@@ -13,6 +13,7 @@ script:
 # Our enviornemnt variables. see: https://neemzy.org/articles/deploy-to-your-own-server-through-ssh-with-travis-ci
 
 #Now being done on project travis page in web ui
+# Need the variables: DEPLOY_USER (ssh user), DEPLOY_PASS(ssh password), DEPLOY_HOST(eg. aaronthedev.com)
 
 # USe sshpass for deployment to run commands
 addons:
@@ -25,6 +26,7 @@ addons:
 # Also, need to add #VARIABLES in travis repo settings
 # Also, ensure that strict host checking is no, or elese travis just wont do antyhing :p
 after_success:
+- export SSHPASS=$DEPLOY_PASS
 - echo "Branch we are currently testing from:"
 - echo $TRAVIS_BRANCH
 - echo "Current Directory and it's contents:"
