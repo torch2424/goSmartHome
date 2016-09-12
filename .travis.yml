@@ -26,4 +26,7 @@ addons:
 after_success:
 - echo "Branch we are currently testing from:"
 - echo $TRAVIS_BRANCH
+- echo "Current Directory and it's contents:"
+- pwd
+- ls
 - if [ "$TRAVIS_BRANCH" == "master" ]; then cat deploy.sh | sshpass -e ssh $DEPLOY_USER@$DEPLOY_HOST "cat > /tmp/deploy.sh ; chmod 755 /tmp/deploy.sh ; /tmp/deploy.sh"; fi
