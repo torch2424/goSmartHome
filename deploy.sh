@@ -1,5 +1,8 @@
 #!/bin/bash
 
+#Inform of deployment
+echo "Deploying the project..."
+
 #Checkout to release branch of project
 cd /home/pi/goPath/src/github.com/torch2424/goSmartHome
 git checkout master
