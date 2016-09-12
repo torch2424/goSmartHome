@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/torch2424/goSmartHome.svg?branch=master)](https://travis-ci.org/torch2424/goSmartHome)
 # goSmartHome
 
 A webserver to run fun commands on a raspberry pi
