@@ -1,0 +1,24 @@
+# THe language we are using
+language: go
+# Version of go we are testing on (using 1.7, tip = lateste)
+go:
+- 1.7
+# our command to install to app on travis server
+install:
+- go get github.com/torch2424/goSmartHome
+# Command to test the app (Currently just running help)
+script:
+- go run main.go --help
+
+# Our enviornemnt variables. see: https://neemzy.org/articles/deploy-to-your-own-server-through-ssh-with-travis-ci
+
+#Now being done on project travis page in web ui
+
+# USe sshpass for deployment to run commands
+addons:
+  apt:
+    packages:
+    - sshpass
+# Run our deployment script on success
+after_success:
+- sshpass -e ssh $DEPLOY_USER@$DEPLOY_HOST $DEPLOY_PATH/deploy.sh
