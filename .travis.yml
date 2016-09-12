@@ -1,0 +1,25 @@
+# Declare Our language
+language: go
+# State our version of go, using tip as the most recent version
+go:
+ - 1.7
+ - tip
+ #Install the app to the travis build runner
+install:
+    - go get github.com/torch2424/goSmartHome
+# Run testing scripts (I'm simply just making sure that --help is working)
+script:
+ - go run main.go --help
+ #Declare our enviornment variables: https://neemzy.org/articles/deploy-to-your-own-server-through-ssh-with-travis-ci
+ env:
+    global:
+        - secure: "QI+XVI+qXdrm8zexKvVxEEJ/454IzCD7CrATzAMuozCRzAQLf8uFzVB9TTfusS2zHMtlc7Wjl/lFkR+1PEqPMEEWW7+tpTlaJPEF8fz+uj5iwbYgukL8h0KU1Pzg8aruJnFMQmJI9OBhLJsUMlyACPnMEL+D9THDl2K8QjIpycCPKFaBUqrueZPvGFPMnKTiQoP3ZpXdNOst9Pl4ZLREriJshkVVtX7k8uITnUSD3ssAGKDxn+IM7tHbLlRYlmaQGRv84/HF9GhuKKoiWiaBIKe+4rAxwhp7WwzIv4P6Uauz2HgWRTewjUcbrseaxMWHCVx/Cn4RtY0RGMTjxyr8Ys0JNP2WHZ35YThGEBmkHvqu6iOj1U5pbwdaV0eiYxkt6JIi3JdCmykYUhCaa6rZ95PlgmXO5kp5V3LQRj1pLGl1OisNFEpcF7jA91rCkcexmdYCDHecSO9oHir8fchPMEPscIk52DkOkOrR6mxAZuttw/Deb1pEN6XWayK79kkL98gcmWD7g0KiqA/Gn85qiEISv2A9INP5EMLl+Ni0/uDzk+0E3jizOz5rNdNSGXT9YmqcX2fBP6Yjf1huNa1JyNY9WaeqlXa+qlTDmwCycjg0tahDGhp3HdVu6Zl84/ybyr7c8f2UNgu8lDq+BOPc/LaUGXkn4m+vDlZK1wM7CNc="
+        - secure: "nzUs0BLhYqL9zNeVXv5SvInGerff7DnGXCNEYPIiiv9AtlwLgrwzytN9hmE2cJZQXQNaY5Yc8tEsw4OmvJUlR/4pwGorCMoJHx93KonkoVJbGcxNdJ76eAU66FTH2Fp+SHRuSSfaBOC3xrIP3IcdUyNAbKhUPQ1HiSUrSsxiQehxs/SryjQ9eY+Ml4NvBREKGrF0HPZ8IeBbT6ZTeHKmZ0/JQ5lA79/KFZmgmMnkO9FafhDS34rnCDUd8vD++jYtMSsCDleeBgnnAGfq7F7vxQi0qvUsPhna+v9qq52/O0SqybFvOp8EVxggIqL6GMzTBlWbdd2s/WHjiHBqjPZbJpuYawUvOwNSHNvhth6Gg/p6VQHswFmPqhoc1Tw7CdpAHtsyYlPMVjZJKo8v0nojPu/e9SRE1cF/AfEc9Ygf4cIMcmbfSwM0m1gKMBH/Kc/b/hg+LVnHbRcCGLirpiN0jB71CwUBVODfdcTBdFd6bi6hY92e6emwoqlZsnRHm17HPnJuPNp6X8W9aMLXcr0LLsWldEk2+HXxY7hrhzU98TNmST4nRa64wtM9osXvSzcMevlvE/BxJMTNtDgDmA1vq1kt8/N/NgsZ/1JXSSubGcV5bNACeRgmzR/WPN5R+f0hb0Q5hJaUkXSOGkPuDgnnjXCsIlTtK8MlPN5dYd7qg8o="
+#Add sshpass to run scripts over ssh on PROD
+addons:
+    apt:
+        packages:
+            - sshpass
+# After all tests are run and scuccesful, simply run the ssh deploy script
+ after_success:
+    - sshpass -e ssh $DEPLOY_USER@$DEPLOY_HOST $DEPLOY_PATH/deploy.sh
