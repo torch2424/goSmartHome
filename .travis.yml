@@ -23,6 +23,7 @@ addons:
 # Only if we are pulling into master
 # https://github.com/travis-ci/travis-ci/issues/879
 # Also, need to add #VARIABLES in travis repo settings
+# Also, ensure that strict host checking is no, or elese travis just wont do antyhing :p
 after_success:
 - echo "Branch we are currently testing from:"
 - echo $TRAVIS_BRANCH
