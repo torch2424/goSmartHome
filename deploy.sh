@@ -1,8 +1,8 @@
 #!/bin/bash
 
 #Checkout to release branch of project
-git checkout release
-git pull origin release
+git checkout master
+git pull origin master
 go install github.com/torch2424/goSmartHome
 
 #Restart the server, kill the old screen, and replace it
