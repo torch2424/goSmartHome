@@ -22,10 +22,11 @@ addons:
 # Run our deployment script on success
 # Only if we are pulling into master
 # https://github.com/travis-ci/travis-ci/issues/879
+# Also, need to add #VARIABLES in travis repo settings
 after_success:
 - echo "Branch we are currently testing from:"
 - echo $TRAVIS_BRANCH
 - if [ "$TRAVIS_BRANCH" == "master" ]; then
       echo "Deploying since we are on master...";
-      cat deploy.sh | sshpass -p$DEPLOY_PASS ssh $DEPLOY_USER@$DEPLOY_HOST "cat > /tmp/deploy.sh ; chmod 755 /tmp/deploy.sh ; /tmp/deploy.sh";
+      cat deploy.sh | sshpass -e ssh $DEPLOY_USER@$DEPLOY_HOST "cat > /tmp/deploy.sh ; chmod 755 /tmp/deploy.sh ; /tmp/deploy.sh";
   fi
