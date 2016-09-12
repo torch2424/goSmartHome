@@ -1,8 +1,14 @@
 #!/bin/bash
 
 #Checkout to release branch of project
+cd /home/pi/goPath/src/github.com/torch2424/goSmartHome
 git checkout master
 git pull origin master
+
+# Export go path and install
+export GOROOT="/usr/local/go"
+export GOPATH="/home/pi/goPath"
+export PATH="$PATH:$GOROOT/bin:$GOPATH/bin"
 go install github.com/torch2424/goSmartHome
 
 #Restart the server, kill the old screen, and replace it

@@ -27,5 +27,5 @@ after_success:
 - echo $TRAVIS_BRANCH
 - if [ "$TRAVIS_BRANCH" == "master" ]; then
       echo "Deploying since we are on master...";
-      sshpass -e ssh $DEPLOY_USER@$DEPLOY_HOST $DEPLOY_PATH/deploy.sh;
+      cat deploy.sh | sshpass -p$DEPLOY_PASS ssh $DEPLOY_USER@$DEPLOY_HOST "cat > /tmp/deploy.sh ; chmod 755 /tmp/deploy.sh ; /tmp/deploy.sh";
   fi
