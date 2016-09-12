@@ -26,6 +26,6 @@ after_success:
 - echo "Branch we are currently testing from:"
 - echo $TRAVIS_BRANCH
 - if [ "$TRAVIS_BRANCH" == "master" ]; then
-      echo "Deploying since we are on master..."
+      echo "Deploying since we are on master...";
       sshpass -e ssh $DEPLOY_USER@$DEPLOY_HOST $DEPLOY_PATH/deploy.sh;
   fi
