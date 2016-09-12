@@ -29,4 +29,4 @@ after_success:
 - echo "Current Directory and it's contents:"
 - pwd
 - ls
-- if [ "$TRAVIS_BRANCH" == "master" ]; then cat deploy.sh | sshpass -e ssh $DEPLOY_USER@$DEPLOY_HOST "cat > /tmp/deploy.sh ; chmod 755 /tmp/deploy.sh ; /tmp/deploy.sh"; fi
+- if [ "$TRAVIS_BRANCH" == "master" ]; then echo "Deploying the project since we are on master branch..."; cat deploy.sh | sshpass -e ssh -o StrictHostKeyChecking=no $DEPLOY_USER@$DEPLOY_HOST "cat > /tmp/deploy.sh ; chmod 755 /tmp/deploy.sh ; /tmp/deploy.sh"; fi
