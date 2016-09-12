@@ -29,13 +29,16 @@ func SpeakPost(ctx *iris.Context) {
     //Get our Json values
     testField := ctx.FormValueString("statement")
 
+    //Place quotes around the testfield
+    testField = fmt.Sprintf("\"%s\"", testField);
+
     //Log the event
 	speakLog := fmt.Sprintf("/speak post | Speaking the following statement: %s\n", testField)
     fmt.Printf(speakLog)
 
     //Run the espeak command, and catch any errors
     //exec.Command(comman, commandArguments)
-    cmd := exec.Command("espeak", testField);
+    cmd := exec.Command("./speak.sh", testField);
     err := cmd.Start()
 	if err != nil {
 		log.Fatal(err)
