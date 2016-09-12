@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/torch2424/goSmartHome.svg?branch=master)](https://travis-ci.org/torch2424/goSmartHome)
 # goSmartHome
 
 A webserver to run fun commands on a raspberry pi
@@ -13,4 +14,4 @@ https://ubuntuforums.org/showthread.php?t=1813001
 http://askubuntu.com/questions/554747/how-to-install-more-voices-to-espeak
 
 ## Cool startup ideas
-add "cmatrix -u 8" in .bashrc for a matrix like display if booting straight into terminal
+add "cmatrix -u 8" in .bashrc for a matrix like display if booting straight into terminal - Done!

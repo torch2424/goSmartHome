@@ -13,6 +13,7 @@ script:
 # Our enviornemnt variables. see: https://neemzy.org/articles/deploy-to-your-own-server-through-ssh-with-travis-ci
 
 #Now being done on project travis page in web ui
+# Need the variables: DEPLOY_USER (ssh user), DEPLOY_PASS(ssh password), DEPLOY_HOST(eg. aaronthedev.com)
 
 # USe sshpass for deployment to run commands
 addons:
@@ -20,5 +21,15 @@ addons:
     packages:
     - sshpass
 # Run our deployment script on success
+# Only if we are pulling into master
+# https://github.com/travis-ci/travis-ci/issues/879
+# Also, need to add #VARIABLES in travis repo settings
+# Also, ensure that strict host checking is no, or elese travis just wont do antyhing :p
 after_success:
-- sshpass -e ssh $DEPLOY_USER@$DEPLOY_HOST $DEPLOY_PATH/deploy.sh
+- export SSHPASS=$DEPLOY_PASS
+- echo "Branch we are currently testing from:"
+- echo $TRAVIS_BRANCH
+- echo "Current Directory and it's contents:"
+- pwd
+- ls
+- if [ "$TRAVIS_BRANCH" == "master" ]; then echo "Deploying the project since we are on master branch..."; cat deploy.sh | sshpass -e ssh -o StrictHostKeyChecking=no $DEPLOY_USER@$DEPLOY_HOST "cat > /tmp/deploy.sh ; chmod 755 /tmp/deploy.sh ; /tmp/deploy.sh"; fi
