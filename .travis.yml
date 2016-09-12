@@ -20,5 +20,9 @@ addons:
     packages:
     - sshpass
 # Run our deployment script on success
+# Only if we are pulling into master
+# https://github.com/travis-ci/travis-ci/issues/879
 after_success:
-- sshpass -e ssh $DEPLOY_USER@$DEPLOY_HOST $DEPLOY_PATH/deploy.sh
+- if [ "$TRAVIS_BRANCH" == "master" ]; then
+      sshpass -e ssh $DEPLOY_USER@$DEPLOY_HOST $DEPLOY_PATH/deploy.sh;
+  fi
