@@ -1,3 +1,8 @@
+# Only build pushes to master and PRS
+branches:
+  only:
+    - master
+
 # THe language we are using
 language: go
 # Version of go we are testing on (using 1.7, tip = lateste)
