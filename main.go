@@ -59,7 +59,6 @@ func main() {
 
     //Serve the app
     serverIp := *userIp
-    fmt.Println(serverIp.String())
     api.Listen(serverIp.String())
 }
 
