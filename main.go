@@ -8,12 +8,13 @@ import "fmt"
 import "github.com/kataras/iris"
 import "github.com/iris-contrib/middleware/recovery"
 import "gopkg.in/alecthomas/kingpin.v2"
-import "github.com/torch2424/goSmartHome/jsonHelpers"
+import "github.com/Jeffail/gabs"
 import "github.com/torch2424/goSmartHome/routes"
+import "github.com/torch2424/goSmartHome/tweeter"
 import "github.com/torch2424/goSmartHome/banner"
 
 //Our json map for api keys
-var ApiKeys map[string]interface{}
+var apiKeys *gabs.Container
 
 //Command Line Parser (Kingpin) Setup
 var (
@@ -35,7 +36,7 @@ func main() {
     //Get our keys
     fmt.Println("Parsing API keys from keys.json, beep, bop, boop, beep...")
     fmt.Println()
-    ApiKeys = jsonHelpers.GetKeys()
+	apiKeys, _ = gabs.ParseJSONFile("jsonFiles/keys.json")
 
     //Print some spacing
     fmt.Println()
@@ -54,9 +55,10 @@ func main() {
     api.Get("/", routes.DefaultRoute)
     api.Post("/speak", routes.SpeakPost)
 
+	go tweeter.BackgroundTweet(apiKeys);
+
     //Serve the app
     serverIp := *userIp
-    fmt.Println(serverIp.String())
     api.Listen(serverIp.String())
 }
 
@@ -67,7 +69,7 @@ func checkKeys() {
 
     //Save our keys, and err if we are missing any
     //Using type assertion from the map, as our keys will be strings
-    iftttKey := ApiKeys["ifttt"].(string)
+    iftttKey := apiKeys.Path("ifttt").Data().(string)
     if len(iftttKey) < 1 {
         fmt.Println("The ifttt key is blank, exiting...")
         fmt.Println()

@@ -6,7 +6,6 @@ import "log"
 import "os/exec"
 import "io/ioutil"
 import "github.com/kataras/iris"
-import "github.com/torch2424/goSmartHome/jsonHelpers"
 
 //DefaultRoute
 func DefaultRoute(ctx *iris.Context) {
@@ -45,6 +44,5 @@ func SpeakPost(ctx *iris.Context) {
 	}
 
     //Send Okay and respond
-    response := jsonHelpers.Response{fmt.Sprintf("Success! Speaking the following statement: %s", testField)}
-    ctx.JSON(iris.StatusOK, response)
+    ctx.JSON(iris.StatusOK, iris.Map{"message": fmt.Sprintf("Success! Speaking the following statement: %s", testField)})
 }
