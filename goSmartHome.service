@@ -1,0 +1,11 @@
+[Service]
+WorkingDirectory=/home/pi/goPath/src/github.com/torch2424/goSmartHome
+ExecStart=goSmartHome --server=0.0.0.0:4000
+Restart=always
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=goSmartHome
+User=root
+Group=root
+[Install]
+WantedBy=multi-user.target
