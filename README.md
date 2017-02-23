@@ -3,7 +3,7 @@
 
 A webserver to run fun commands on a raspberry pi
 
-![Karen Smart Home Gif](https://files.aaronthedev.com/$/pytjw)
+![Karen Smart Home Gif](https://files.aaronthedev.com/$/j35ht)
 
 ## Examples of using IFTTT Maker channel for requests
 
