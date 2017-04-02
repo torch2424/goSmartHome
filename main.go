@@ -5,12 +5,14 @@ package main
 
 import "os"
 import "fmt"
-import "github.com/kataras/iris"
-import "github.com/iris-contrib/middleware/recovery"
+import "gopkg.in/kataras/iris.v6"
+import "gopkg.in/kataras/iris.v6/adaptors/httprouter"
+import "gopkg.in/kataras/iris.v6/middleware/recover"
 import "gopkg.in/alecthomas/kingpin.v2"
 import "github.com/Jeffail/gabs"
 import "github.com/torch2424/goSmartHome/routes"
 import "github.com/torch2424/goSmartHome/tweeter"
+import "github.com/torch2424/goSmartHome/hourlyjobs"
 import "github.com/torch2424/goSmartHome/banner"
 
 //Our json map for api keys
@@ -47,15 +49,17 @@ func main() {
     //Print some spacing
     fmt.Println()
 
-    //Initialize our recovery middleware to auto-restart on failure
-    iris.Use(recovery.Handler)
-
     //Initialize our api and routes
     api := iris.New()
+		//Initialize our recovery middleware to auto-restart on failure
+		api.Use(recover.New())
+		api.Adapt(httprouter.New())
     api.Get("/", routes.DefaultRoute)
     api.Post("/speak", routes.SpeakPost)
 
-	go tweeter.BackgroundTweet(apiKeys);
+		// Start our background tasks
+		go tweeter.BackgroundTweet(apiKeys);
+		go hourlyjobs.HourlyJobs();
 
     //Serve the app
     serverIp := *userIp
