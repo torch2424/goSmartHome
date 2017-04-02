@@ -11,6 +11,7 @@ import "gopkg.in/alecthomas/kingpin.v2"
 import "github.com/Jeffail/gabs"
 import "github.com/torch2424/goSmartHome/routes"
 import "github.com/torch2424/goSmartHome/tweeter"
+import "github.com/torch2424/goSmartHome/hourlyjobs"
 import "github.com/torch2424/goSmartHome/banner"
 
 //Our json map for api keys
@@ -55,7 +56,9 @@ func main() {
     api.Get("/", routes.DefaultRoute)
     api.Post("/speak", routes.SpeakPost)
 
-	go tweeter.BackgroundTweet(apiKeys);
+		// Start our background tasks
+		go tweeter.BackgroundTweet(apiKeys);
+		go hourlyjobs.HourlyJobs();
 
     //Serve the app
     serverIp := *userIp
