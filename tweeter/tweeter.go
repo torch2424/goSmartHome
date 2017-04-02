@@ -33,8 +33,8 @@ func BackgroundTweet(apiKeys *gabs.Container) {
 	go func() {
 		for _ = range tweetTicker.C {
 
-			//~ 1/10 chance to tweet
-			chance := rand.Intn(10)
+			//~ 1/15 chance to tweet
+			chance := rand.Intn(15)
 			if chance != 3 {
 				//Return if not 3. Golang uses continue to skip to the next iteration of for loop
 				continue
