@@ -19,13 +19,13 @@ func HourlyJobs() {
     for _ = range timeTicker.C {
 
       // Get our current time
-      var month int = int(time.Now().Month)
-      var hour int = int(time.Now().Hour)
+      var month int = int(time.Now().Month())
+      var hour int = int(time.Now().Hour())
       fmt.Println(month)
       fmt.Println(hour)
 
       // if it is 10AM on the 1st of the month
 
     }
-  }
+  }()
 }

@@ -5,7 +5,7 @@ import "fmt"
 import "log"
 import "os/exec"
 import "io/ioutil"
-import "github.com/kataras/iris"
+import "gopkg.in/kataras/iris.v6"
 
 //DefaultRoute
 func DefaultRoute(ctx *iris.Context) {
@@ -14,7 +14,7 @@ func DefaultRoute(ctx *iris.Context) {
     resMarkdown, err := ioutil.ReadFile("views/defaultRoute.md")
 
     if err != nil {
-        ctx.Write("Could not read from views...")
+        ctx.Write([]byte("Could not read from views..."))
         return;
     }
 
@@ -26,7 +26,7 @@ func DefaultRoute(ctx *iris.Context) {
 func SpeakPost(ctx *iris.Context) {
 
     //Get our Json values
-    testField := ctx.FormValueString("statement")
+    testField := ctx.FormValue("statement")
 
     //Place quotes around the testfield
     testField = fmt.Sprintf("\"%s\"", testField);
