@@ -6,7 +6,7 @@ package main
 import "os"
 import "fmt"
 import "github.com/kataras/iris"
-import "github.com/kataras/iris/middleware/recover"
+import "gopkg.in/kataras/iris.v6/middleware/recover"
 import "gopkg.in/alecthomas/kingpin.v2"
 import "github.com/Jeffail/gabs"
 import "github.com/torch2424/goSmartHome/routes"
@@ -49,7 +49,7 @@ func main() {
     fmt.Println()
 
     //Initialize our recovery middleware to auto-restart on failure
-    iris.Use(recover.Handler)
+    iris.Use(recover.New())
 
     //Initialize our api and routes
     api := iris.New()
