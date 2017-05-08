@@ -2,4 +2,4 @@
 
 My name is Karen! I do cool things! Yay!
 
-![Karen Image](https://files.aaronthedev.com/$/f4sm6)
+![Karen Image](https://pbs.twimg.com/profile_images/770683133452660737/Noaihw68_400x400.jpg)
