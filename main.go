@@ -5,7 +5,8 @@ package main
 
 import "os"
 import "fmt"
-import "github.com/kataras/iris"
+import "gopkg.in/kataras/iris.v6"
+import "gopkg.in/kataras/iris.v6/adaptors/httprouter"
 import "gopkg.in/kataras/iris.v6/middleware/recover"
 import "gopkg.in/alecthomas/kingpin.v2"
 import "github.com/Jeffail/gabs"
@@ -48,11 +49,11 @@ func main() {
     //Print some spacing
     fmt.Println()
 
-    //Initialize our recovery middleware to auto-restart on failure
-    iris.Use(recover.New())
-
     //Initialize our api and routes
     api := iris.New()
+		//Initialize our recovery middleware to auto-restart on failure
+		api.Use(recover.New())
+		api.Adapt(httprouter.New())
     api.Get("/", routes.DefaultRoute)
     api.Post("/speak", routes.SpeakPost)
 
